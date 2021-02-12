@@ -1,6 +1,8 @@
 /*
  * Copyright (C) 2013-2021 by James Bowman <jamesb@excamera.com>
  * Gameduino 2/3 library for Teensy 3.5, 3.6, 4 y 4.1   FT81xmania Team@2021
+ * SDIO support
+ * SdFat-beta by Greiman@2021 via teensyduino  
 */
 
 #include <Arduino.h>

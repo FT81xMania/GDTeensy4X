@@ -1,6 +1,8 @@
 /*
  * Copyright (C) 2013-2021 by James Bowman <jamesb@excamera.com>
  * Gameduino 2/3 library for Teensy 3.5, 3.6, 4 y 4.1   FT81xmania Team@2021
+ * SDIO support
+ * SdFat-beta by Greiman@2021 via teensyduino  
 */
 
 #ifndef _GDTeensy4X_H_INCLUDED
@@ -10,7 +12,6 @@
 
 #include "SdFat.h"
 #define CS           10  //    EVE2/EVE3
-#define SD_PIN        9     // pin used for the microSD enable signal
 
 #define Orientation     0  //0, 1 for FT80x, 0,1,2,3 for FT81x or BT81x
 #define PROTO           0   //0 FT843 or FT80x alternatives, 1 MEGA, UNO y gameduino2/3
