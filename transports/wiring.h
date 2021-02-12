@@ -17,7 +17,7 @@ public:
     hostcmd(0x42);    // SLEEP
 //  hostcmd(0x61);    // CLKSEL default
     hostcmd(0x00);    // ACTIVE
-#if (BOARD != BOARD_GAMEDUINO23)
+#if (BOARD != BOARD_FT_81X)
     hostcmd(0x44);    // CLKEXT
 #else
 //    hostcmd(0x48);    // CLKINT
