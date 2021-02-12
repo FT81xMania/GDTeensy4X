@@ -707,7 +707,7 @@ public:
   }
 private:
 
-  File32 r;                        //FT81xmania SdFat version 2019 XD
+  File32 r;
 
   uint32_t base;
   uint16_t mask;
@@ -809,7 +809,7 @@ class MoviePlayer
 {
   uint32_t mf_size, mf_base, wp;
 
-  File32 r;                      //FT81xmania SdFat version 2019 XD
+  File32 r;
 
   void loadsector() {
     byte buf[512];
