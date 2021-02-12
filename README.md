@@ -16,7 +16,7 @@ Without any interest, we publish this library altruistically.
 
 # 10-02-2021: Release initial (GDTeensy4X)
 
-1. Library based on gameduino 23X of [James Bowman](https://github.com/jamesbowman/gd2-lib)
+1. Library based on gameduino 23X lib of [James Bowman](https://github.com/jamesbowman/gd2-lib)
 2. Library based on [STM32_GD2](https://github.com/nopnop2002/STM32_GD2) user **@nopnop2002** this [link](http://stm32duino.com/viewtopic.php?f=9&t=3466#p44477)
 
 Library with function special **playback videos**. 
@@ -26,3 +26,5 @@ Library with function special **playback videos**.
 * Teensy 3.5 and Teensy 3.6
 * Teensy 4
 * Teensy 4.1
+
+In memory of my brother Tomas. Thank You!
