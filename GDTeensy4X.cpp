@@ -14,7 +14,7 @@
 #include <GDTeensy4X.h>
 
  #include <SdFat.h>
- #define SD_FAT_TYPE 1    //SdFat beta V2 2019 THx Greiman, 
+ #define SD_FAT_TYPE 1 
  SdFat32 SD;
 
 byte ft8xx_model;
