@@ -16,27 +16,25 @@
 #define PROTO           0   //0 FT843 or FT80x alternatives, 1 MEGA, UNO y gameduino2/3
 
 //*************** User editable line to select EVE TFT size
-#define SizeFT813       35  //NHD: 7-7", , 35-3.5"  //  5-5", 43-4.3", Riverdi: 51-5", 71-7", MO: 52-5"BT815, MO: 53-5"FT813
+#define SizeFT813       51  //NHD: 7-7", , 35-3.5"  //  5-5", 43-4.3", Riverdi: 51-5", 71-7", MO: 52-5"BT815, MO: 53-5"FT813
 //*************** User editable line to select EVE TFT size
-#define SetSPISpeed  36000000  //Riverdi TFT 5"  29000000
+
+#if(SizeFT813==51)
+ #define SetSPISpeed  29000000  //Riverdi TFT 5"  29000000
+#endif
+#if(SizeFT813==35)
+ #define SetSPISpeed  36000000  //NHD TFT 3.5"  29000000
+#endif
 
 //Depurar
                             // Options for GD.begin():
 #define GD_CALIBRATE    1   // enable touchscreen calibration at startup
 #define GD_TRIM         2   // trim the built-in oscillator
-#define GD_STORAGE      4   // initialize attached microSD
 #define GD_NOBACKLIGHT  8   // don't turn on the backlight
 
-#define BOARD_FTDI_80x    0
-#define BOARD_GAMEDUINO23 1
-#define BOARD_SUNFLOWER   2
-#define BOARD_OTHER       3
+#define BOARD_FT_81X    1
+#define BOARD           BOARD_FT_81X
 
-#ifndef BOARD
-#define BOARD         BOARD_GAMEDUINO23 // board, from above
-#endif
-
-#define STORAGE       1                 // Want SD storage?
 #define CALIBRATION   1                 // Want touchscreen calibration?
 
 //Depurar
@@ -112,7 +110,8 @@ public:
   uint32_t loadptr;
   byte vxf;   // Vertex Format
 
-  void begin(uint8_t options = (GD_CALIBRATE | GD_TRIM | GD_STORAGE), int cs = CS);
+//  void begin(uint8_t options = (GD_CALIBRATE | GD_TRIM | GD_STORAGE), int cs = CS);
+  void begin(uint8_t options = (GD_CALIBRATE | GD_TRIM), int cs = CS);
 
   uint16_t random();
   uint16_t random(uint16_t n);
@@ -137,7 +136,7 @@ public:
   void sample(uint32_t start, uint32_t len, uint16_t freq, uint16_t format, int loop = 0);
 
   void get_inputs(void);
-  void get_accel(int &x, int &y, int &z);
+
   struct _wii {
       byte active;
       xy l, r;
@@ -222,6 +221,7 @@ public:
   void cmd_calibrate(void);
   void cmd_clock(int16_t x, int16_t y, int16_t r, uint16_t options, uint16_t h, uint16_t m, uint16_t s, uint16_t ms);
   void cmd_coldstart(void);
+
   void cmd_dial(int16_t x, int16_t y, int16_t r, uint16_t options, uint16_t val);
   void cmd_dlstart(void);
   void cmd_fgcolor(uint32_t c);
@@ -242,6 +242,7 @@ public:
   void cmd_memwrite(uint32_t ptr, uint32_t num);
   void cmd_regwrite(uint32_t ptr, uint32_t val);
   void cmd_number(int16_t x, int16_t y, byte font, uint16_t options, uint32_t n);
+  void printNfloat(int16_t x, int16_t y, float f, int16_t Presc, byte font);
   void cmd_progress(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t options, uint16_t val, uint16_t range);
   void cmd_regread(uint32_t ptr);
   void cmd_rotate(int32_t a);
@@ -312,7 +313,6 @@ public:
   void alert();
   void textsize(int &w, int &h, int font, const char *s);
 
-  void storage(void);
   void tune(void);
 
 private:

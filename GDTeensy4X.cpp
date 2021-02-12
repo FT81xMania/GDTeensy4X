@@ -500,26 +500,33 @@ void GDClass::tune(void)
 void GDClass::begin(uint8_t options, int cs) {
 
  GDTR.begin0();
-
+ byte external_crystal = 0;
  SD.begin(SdioConfig(FIFO_SDIO));         //SdFat beta V2 2019  100% funcional XD
 
- byte external_crystal = 0;
  begin1:
  GDTR.begin1();
+  
+  #if(SizeFT813==51)
+   GD.wr32(REG_PCLK, 2);
+  #endif
+  #if(SizeFT813==35)
+   GD.wr32(REG_PCLK, 6);//5
+  #endif
 
+  ClearColorRGB(0x000000);
   Clear();
   swap();
   finish();
 
-#if 0
-  Serial.print("GD options:");
-  Serial.println(options, DEC);
-  Serial.print("cs:");
-  Serial.println(cs, DEC);
-  Serial.print("sdcs:");
-  Serial.println(sdcs, DEC);
-  Serial.print("BOARD");
-  Serial.println(BOARD, DEC);
+//#if 0
+  //Serial.print("GD options:");
+  //Serial.println(options, DEC);
+  //Serial.print("cs:");
+  //Serial.println(cs, DEC);
+  //Serial.print("sdcs:");
+  //Serial.println(sdcs, DEC);
+  //Serial.print("BOARD");
+  //Serial.println(BOARD, DEC);
 
   Serial.print("model:");
   Serial.println(ft8xx_model, HEX);
@@ -531,7 +538,7 @@ void GDClass::begin(uint8_t options, int cs) {
   Serial.println(GDTR.rd32(REG_CMD_WRITE), HEX);
   Serial.print("CMDB SPACE:");
   Serial.println(GDTR.rd32(REG_CMDB_SPACE), HEX);
-#endif
+//#endif
 
   GDTR.wr(REG_PWM_DUTY, 0);
 #if BOARD != BOARD_OTHER
@@ -539,7 +546,7 @@ void GDClass::begin(uint8_t options, int cs) {
   GDTR.wr(REG_GPIO, GDTR.rd(REG_GPIO) | 0x80);
 #endif
 
-#if (BOARD == BOARD_GAMEDUINO23)
+#if (BOARD == BOARD_FT_81X)
   Clear(); swap();
   switch (ft8xx_model) {
 
@@ -597,7 +604,7 @@ void GDClass::begin(uint8_t options, int cs) {
 	GD.wr32(REG_VSYNC0, 0);
 	GD.wr32(REG_VSYNC1, 2);
 
-	GD.wr32(REG_PCLK, 6);//5
+	//GD.wr32(REG_PCLK, 6);//5
 	GD.wr32(REG_SWIZZLE, 2);
 	GD.wr32(REG_PCLK_POL, 1);//1
 	GD.wr32(REG_CSPREAD, 0);//1
@@ -619,7 +626,7 @@ void GDClass::begin(uint8_t options, int cs) {
     GD.wr32(REG_VSYNC0, 0);
     GD.wr32(REG_VSYNC1, 10);
 
-    GD.wr32(REG_PCLK, 2);
+    //GD.wr32(REG_PCLK, 2);
     GD.wr32(REG_PCLK_POL, 0);
     GD.wr32(REG_CSPREAD, 0);       // 1
     GD.wr32(REG_DITHER, 1);        // 1
@@ -698,16 +705,10 @@ void GDClass::begin(uint8_t options, int cs) {
   cprim = 0xff;
   vxf = 4;
 
-  if ((BOARD == BOARD_GAMEDUINO23) && (options & GD_TRIM)) {
+  if ((BOARD == BOARD_FT_81X) && (options & GD_TRIM)) {
     tune();
   }
   finish();
-}
-
-void GDClass::storage(void) {
-  GDTR.__end();
-  SD.begin(SD_PIN);
-  GDTR.resume();
 }
 
 void GDClass::self_calibrate(void) {
@@ -1140,6 +1141,7 @@ void GDClass::cmd_clock(int16_t x, int16_t y, int16_t r, uint16_t options, uint1
 void GDClass::cmd_coldstart(void) {
   cFFFFFF(0x32);
 }
+
 void GDClass::cmd_dial(int16_t x, int16_t y, int16_t r, uint16_t options, uint16_t val) {
   cFFFFFF(0x2d);
   ch(x);
@@ -1274,6 +1276,46 @@ void GDClass::cmd_number(int16_t x, int16_t y, byte font, uint16_t options, uint
   ci(n);
   cprim = BITMAPS;
 }
+
+void GDClass::printNfloat(int16_t x, int16_t y, float f, int16_t Presc, byte font) {
+ //Parte entera
+ cmd_number(x - 2, y, font, OPT_RIGHTX | OPT_SIGNED, int(f));
+ //Parte entera
+
+ Presc = abs(Presc);
+ 
+// Punto y parte decimal
+if (Presc==1){
+ cmd_text(  x,     y, font, 0, ".");
+ cmd_number(x + 9, y, font, Presc, int(10 * abs(f))); // 1 decimal
+ }  
+if (Presc==2){
+ cmd_text(  x,     y, font, 0, ".");
+ cmd_number(x + 9, y, font, Presc, int(100 * abs(f))); // 2 decimales
+ }
+if (Presc==3){  
+ cmd_text(  x,     y, font, 0, ".");
+ cmd_number(x + 9, y, font, Presc, int(1000 * abs(f))); //3 decimales
+ }
+if (Presc==4){  
+ cmd_text(  x,     y, font, 0, ".");
+ cmd_number(x + 9, y, font, Presc, int(10000 * abs(f))); //4 decimales
+ }
+if (Presc==5){  
+ cmd_text(  x,     y, font, 0, ".");
+ cmd_number(x + 9, y, font, Presc, int(100000 * abs(f))); //5 decimales
+ }
+if (Presc==6){
+ cmd_text(  x,     y, font, 0, ".");
+ cmd_number(x + 9, y, font, Presc, int(1000000 * abs(f))); //6 decimales
+ }
+if (Presc==7){
+ cmd_text(  x,     y, font, 0, ".");
+ cmd_number(x + 9, y, font, Presc, int(10000000 * abs(f))); //7 decimales
+ }
+// Punto y parte decimal
+}
+
 void GDClass::cmd_progress(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t options, uint16_t val, uint16_t range) {
   cFFFFFF(0x0f);
   ch(x);
@@ -1538,26 +1580,6 @@ void GDClass::cmd32(uint32_t b) {
 void GDClass::finish(void) {
   GDTR.finish();
 }
-#if defined(ARDUINO_ARCH_STM32)
-void GDClass::get_accel(int &x, int &y, int &z) {
-  x = 0;
-  y = 0;
-  z = 0;
-}
-#else
-void GDClass::get_accel(int &x, int &y, int &z) {
-  static int f[3];
-
-  for (byte i = 0; i < 3; i++) {
-    int a = analogRead(A0 + i);
-    int s = (-160 * (a - 376)) >> 6;
-    f[i] = ((3 * f[i]) >> 2) + (s >> 2);
-  }
-  x = f[2];
-  y = f[1];
-  z = f[0];
-}
-#endif
 void GDClass::get_inputs(void) {
   GDTR.finish();
   byte *bi = (byte*)&inputs;
