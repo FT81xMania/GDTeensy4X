@@ -503,7 +503,7 @@ void GDClass::begin(uint8_t options, int cs) {
 
  GDTR.begin0();
  byte external_crystal = 0;
- SD.begin(SdioConfig(FIFO_SDIO));         //SdFat beta V2 2019  100% funcional XD
+ SD.begin(SdioConfig(FIFO_SDIO));
 
  begin1:
  GDTR.begin1();
