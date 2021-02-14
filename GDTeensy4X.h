@@ -826,8 +826,6 @@ class MoviePlayer
 
 public:
   int begin(const char *filename) {
-    //if (ft8xx_model == 0) 
-    //GD.alert("FT800 is not support MoviePlayer");
     mf_size = 0x40000UL;
     mf_base = 0x100000UL - mf_size;
     GD.__end();

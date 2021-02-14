@@ -14,7 +14,7 @@
 #include <GDTeensy4X.h>
 
  #include <SdFat.h>
- #define SD_FAT_TYPE 1 
+ //#define SD_FAT_TYPE 1
  SdFat32 SD;
 
 byte ft8xx_model;
@@ -521,15 +521,6 @@ void GDClass::begin(uint8_t options, int cs) {
   finish();
 
 //#if 0
-  //Serial.print("GD options:");
-  //Serial.println(options, DEC);
-  //Serial.print("cs:");
-  //Serial.println(cs, DEC);
-  //Serial.print("sdcs:");
-  //Serial.println(sdcs, DEC);
-  //Serial.print("BOARD");
-  //Serial.println(BOARD, DEC);
-
   Serial.print("model:");
   Serial.println(ft8xx_model, HEX);
   Serial.print("ID REGISTER:");
