@@ -1,7 +1,7 @@
-![FT81xMania](logo.png?raw=true "GD23ZUTX")
+![FT81xMania](logo.png?raw=true "GDTeensy4X")
 
 
-![FT81xMania](logo2.gif?raw=true "GD23ZUTX")
+![FT81xMania](logo2.gif?raw=true "GDTeensy4X")
 
 # MexSpa Team contribution for [FT81xMania](https://ft81xmania.com/comunidad/)
 
@@ -18,6 +18,8 @@ Without any interest, we publish this library altruistically.
 
 1. Library based on gameduino 23X lib of [James Bowman](https://github.com/jamesbowman/gd2-lib)
 2. Library based on [STM32_GD2](https://github.com/nopnop2002/STM32_GD2) user **@nopnop2002** this [link](http://stm32duino.com/viewtopic.php?f=9&t=3466#p44477)
+3. Add FFT example
+
 
 Library with function special **playback videos**. 
 
